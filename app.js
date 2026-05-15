@@ -1,3 +1,4 @@
+
 let isAdmin = false;
 
 const MATCH_DAYS_KEY = 'globalMatchDays';
@@ -159,7 +160,9 @@ if(!date)return;
 
 const days=getMatchDays();
 
+if(!days.includes(date)){
 days.push(date);
+}
 
 saveMatchDays(days);
 
@@ -179,7 +182,8 @@ reg.showNotification(title,{
 body,
 icon:'icons/icon-192.png',
 badge:'icons/icon-192.png',
-vibrate:[200,100,200]
+vibrate:[200,100,200],
+requireInteraction:true
 });
 
 }
@@ -194,27 +198,15 @@ async function requestNotificationPermission(){
 await Notification.requestPermission();
 }
 
-function checkMatchDayNotification(time){
+/* FIXED MATCH DAY LOGIC */
+
+function isTodayMatchDay(){
 
 const today = new Date().toISOString().split('T')[0];
 
 const days = getMatchDays();
 
-if(days.includes(today) && (time==='05:30' || time==='06:00')){
-
-sendNotification(
-'Fuel & Match Day Reminder',
-`Take Collagen + Fat Flush
-
-Carry:
-• Dark Chocolate
-• Pumpkin Seeds
-• Glucon-D
-• Fast&Up
-• Protein Shake`
-);
-
-}
+return days.includes(today);
 
 }
 
@@ -229,16 +221,39 @@ reminders.forEach(reminder=>{
 
 if(reminder.time===currentTime){
 
+/* MATCH DAY MORNING NOTIFICATION */
+
+if(
+isTodayMatchDay() &&
+(currentTime === '05:30' || currentTime === '06:00')
+){
+
+sendNotification(
+'Fuel & Match Day Reminder',
+`Take Collagen + Fat Flush
+
+Carry:
+• Dark Chocolate
+• Pumpkin Seeds
+• Glucon-D
+• Fast&Up
+• Protein Shake`
+);
+
+} else {
+
 sendNotification(
 'Fuel & Recovery Reminder',
 reminder.text
 );
 
-checkMatchDayNotification(currentTime);
+}
 
 }
 
 });
+
+/* WEDNESDAY VITAMIN D */
 
 if(now.getDay()===3 && currentTime==='08:00'){
 
@@ -271,10 +286,28 @@ document.getElementById('enableNotifications')
 document.getElementById('testNotification')
 .addEventListener('click',()=>{
 
+if(isTodayMatchDay()){
+
+sendNotification(
+'Fuel & Match Day Reminder',
+`Take Collagen + Fat Flush
+
+Carry:
+• Dark Chocolate
+• Pumpkin Seeds
+• Glucon-D
+• Fast&Up
+• Protein Shake`
+);
+
+}else{
+
 sendNotification(
 'Test Notification',
 'Notifications Working'
 );
+
+}
 
 });
 
