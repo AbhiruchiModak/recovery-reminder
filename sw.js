@@ -21,3 +21,8 @@ caches.match(event.request)
 .then(response=>response || fetch(event.request))
 );
 });
+
+self.addEventListener('notificationclick',event=>{
+event.notification.close();
+event.waitUntil(clients.openWindow('/'));
+});

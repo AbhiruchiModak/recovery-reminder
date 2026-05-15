@@ -1,38 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="theme-color" content="#0f172a" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0f172a">
 <title>Fuel & Recovery Reminder</title>
-<link rel="manifest" href="manifest.json" />
-<link rel="stylesheet" href="styles.css" />
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
 <div id="loginScreen" class="login-screen">
-<div class="login-card">
-<h2>Fuel & Recovery Reminder</h2>
+  <div class="login-card">
+    <h2>Fuel & Recovery Reminder</h2>
 
-<input type="text" id="username" placeholder="Username" />
-<input type="password" id="password" placeholder="Password" />
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
 
-<button onclick="login()">Login</button>
+    <button onclick="login()">Login</button>
 
-<p>Admin: admin / admin123</p>
-<p>User: user / user123</p>
-</div>
+    <p>Admin: admin / admin123</p>
+    <p>User: user / user123</p>
+  </div>
 </div>
 
 <header>
-<h1>Fuel & Recovery Reminder</h1>
-<p>Athlete Meal & Supplement Tracker</p>
+  <h1>Fuel & Recovery Reminder</h1>
+  <p>Athlete Meal & Supplement Tracker</p>
 </header>
 
 <main>
 
 <section class="card" id="dashboard">
-<h2>Next Reminder</h2>
+<h2>Dashboard</h2>
 <div id="nextReminder"></div>
 <div id="countdown"></div>
 </section>
@@ -46,20 +46,21 @@
 <h2>Match Days</h2>
 
 <div id="adminControls">
-<input type="date" id="matchDate" />
+<input type="date" id="matchDate">
 <button id="addMatchBtn">Add Match Day</button>
 </div>
 
 <div id="matchDays"></div>
 </section>
 
-<section class="card settings" id="settings">
+<section class="card" id="settings">
 <h2>Settings</h2>
 
 <button id="enableNotifications">Enable Notifications</button>
 <button id="testNotification">Send Test Notification</button>
 <button id="toggleDarkMode">Toggle Dark Mode</button>
 <button onclick="logout()">Logout</button>
+
 </section>
 
 </main>

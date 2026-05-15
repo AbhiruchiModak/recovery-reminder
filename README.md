@@ -8,4 +8,10 @@ User Login:
 username: user
 password: user123
 
-Run with VS Code Live Server.
+Features:
+- Shared match days
+- Admin/user roles
+- Match day notifications
+- PWA support
+- Offline support
+- Dark mode

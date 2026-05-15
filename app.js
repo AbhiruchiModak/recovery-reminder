@@ -1,5 +1,7 @@
 let isAdmin = false;
 
+const MATCH_DAYS_KEY = 'globalMatchDays';
+
 const USERS = {
 admin:{
 password:'admin123',
@@ -49,7 +51,8 @@ initializeApp();
 }
 
 function logout(){
-localStorage.clear();
+localStorage.removeItem('loggedInUser');
+localStorage.removeItem('role');
 location.reload();
 }
 
@@ -81,7 +84,7 @@ item.className='reminder-item';
 item.innerHTML=`
 <strong>${reminder.time}</strong>
 <p>${reminder.text}</p>
-<input type="checkbox" />
+<input type="checkbox">
 `;
 
 item.querySelector('input').addEventListener('change',()=>{
@@ -94,74 +97,12 @@ reminderList.appendChild(item);
 
 }
 
-function sendNotification(title,body){
-
-if(Notification.permission==='granted'){
-
-navigator.serviceWorker.getRegistration().then(reg=>{
-
-if(reg){
-
-reg.showNotification(title,{
-body,
-icon:'icons/icon-192.png',
-badge:'icons/icon-192.png',
-vibrate:[200,100,200]
-});
-
-}
-
-});
-
-}
-
-}
-
-async function requestNotificationPermission(){
-await Notification.requestPermission();
-}
-
-function scheduleNotifications(){
-
-setInterval(()=>{
-
-const now=new Date();
-const currentTime=now.toTimeString().slice(0,5);
-
-reminders.forEach(reminder=>{
-
-if(reminder.time===currentTime){
-
-sendNotification(
-'Fuel & Recovery Reminder',
-reminder.text
-);
-
-checkMatchDayNotification(currentTime);
-
-}
-
-});
-
-if(now.getDay()===3 && currentTime==='08:00'){
-
-sendNotification(
-'Breakfast + Vitamin D',
-'Breakfast + Protein Time\nTake Vitamin D'
-);
-
-}
-
-},60000);
-
-}
-
 function getMatchDays(){
-return JSON.parse(localStorage.getItem('matchDays')) || [];
+return JSON.parse(localStorage.getItem(MATCH_DAYS_KEY)) || [];
 }
 
 function saveMatchDays(days){
-localStorage.setItem('matchDays',JSON.stringify(days));
+localStorage.setItem(MATCH_DAYS_KEY,JSON.stringify(days));
 }
 
 function renderMatchDays(){
@@ -226,19 +167,89 @@ renderMatchDays();
 
 });
 
+function sendNotification(title,body){
+
+if(Notification.permission === 'granted'){
+
+navigator.serviceWorker.getRegistration().then(reg=>{
+
+if(reg){
+
+reg.showNotification(title,{
+body,
+icon:'icons/icon-192.png',
+badge:'icons/icon-192.png',
+vibrate:[200,100,200]
+});
+
+}
+
+});
+
+}
+
+}
+
+async function requestNotificationPermission(){
+await Notification.requestPermission();
+}
+
 function checkMatchDayNotification(time){
 
-const today=new Date().toISOString().split('T')[0];
-const days=getMatchDays();
+const today = new Date().toISOString().split('T')[0];
+
+const days = getMatchDays();
 
 if(days.includes(today) && (time==='05:30' || time==='06:00')){
 
 sendNotification(
-'Match Day Essentials',
-'Carry:\n• Dark Chocolate\n• Pumpkin Seeds\n• Glucon-D\n• Fast&Up\n• Protein Shake'
+'Fuel & Match Day Reminder',
+`Take Collagen + Fat Flush
+
+Carry:
+• Dark Chocolate
+• Pumpkin Seeds
+• Glucon-D
+• Fast&Up
+• Protein Shake`
 );
 
 }
+
+}
+
+function scheduleNotifications(){
+
+setInterval(()=>{
+
+const now = new Date();
+const currentTime = now.toTimeString().slice(0,5);
+
+reminders.forEach(reminder=>{
+
+if(reminder.time===currentTime){
+
+sendNotification(
+'Fuel & Recovery Reminder',
+reminder.text
+);
+
+checkMatchDayNotification(currentTime);
+
+}
+
+});
+
+if(now.getDay()===3 && currentTime==='08:00'){
+
+sendNotification(
+'Breakfast + Vitamin D',
+'Breakfast + Protein Time\nTake Vitamin D'
+);
+
+}
+
+},60000);
 
 }
 
@@ -259,7 +270,12 @@ document.getElementById('enableNotifications')
 
 document.getElementById('testNotification')
 .addEventListener('click',()=>{
-sendNotification('Test Notification','Notifications Working');
+
+sendNotification(
+'Test Notification',
+'Notifications Working'
+);
+
 });
 
 document.getElementById('toggleDarkMode')
@@ -271,8 +287,8 @@ if('serviceWorker' in navigator){
 navigator.serviceWorker.register('sw.js');
 }
 
-const savedUser=localStorage.getItem('loggedInUser');
-const savedRole=localStorage.getItem('role');
+const savedUser = localStorage.getItem('loggedInUser');
+const savedRole = localStorage.getItem('role');
 
 if(savedUser && savedRole){
 
