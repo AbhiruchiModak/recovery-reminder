@@ -1,17 +1,11 @@
 # Fuel & Recovery Reminder
 
-## Run Locally
+Admin Login:
+username: admin
+password: admin123
 
-Use VS Code Live Server.
+User Login:
+username: user
+password: user123
 
-## Deploy
-
-Upload to Netlify or Vercel.
-
-## Features
-
-- Meal reminders
-- Supplement reminders
-- Match day tracking
-- Offline PWA
-- Push notifications
+Run with VS Code Live Server.
