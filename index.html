@@ -4,66 +4,58 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#0f172a" />
-
   <title>Fuel & Recovery Reminder</title>
-
   <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
-  <header>
-    <h1>Fuel & Recovery Reminder</h1>
-    <p>Athlete Meal & Supplement Tracker</p>
-  </header>
+<header>
+  <h1>Fuel & Recovery Reminder</h1>
+  <p>Athlete Meal & Supplement Tracker</p>
+</header>
 
-  <main>
+<main>
 
-    <section class="card">
-      <h2>Next Reminder</h2>
-      <div id="nextReminder">Loading...</div>
-      <div id="countdown"></div>
-    </section>
+<section class="card" id="dashboard">
+  <h2>Next Reminder</h2>
+  <div id="nextReminder"></div>
+  <div id="countdown"></div>
+</section>
 
-    <section class="card">
-      <h2>Today's Reminders</h2>
-      <div id="reminderList"></div>
-    </section>
+<section class="card" id="reminders">
+  <h2>Today's Reminders</h2>
+  <div id="reminderList"></div>
+</section>
 
-    <section class="card">
-      <h2>Match Days</h2>
+<section class="card" id="matchdays">
+  <h2>Match Days</h2>
 
-      <input type="date" id="matchDate" />
-      <button id="addMatchBtn">Add Match Day</button>
+  <div id="adminControls">
+    <input type="date" id="matchDate" />
+    <button id="addMatchBtn">Add Match Day</button>
+  </div>
 
-      <div id="matchDays"></div>
-    </section>
+  <div id="matchDays"></div>
+</section>
 
-    <section class="card settings">
-      <h2>Settings</h2>
+<section class="card settings" id="settings">
+  <h2>Settings</h2>
 
-      <button id="enableNotifications">
-        Enable Notifications
-      </button>
+  <button id="enableNotifications">Enable Notifications</button>
+  <button id="testNotification">Send Test Notification</button>
+  <button id="toggleDarkMode">Toggle Dark Mode</button>
+</section>
 
-      <button id="testNotification">
-        Send Test Notification
-      </button>
+</main>
 
-      <button id="toggleDarkMode">
-        Toggle Dark Mode
-      </button>
-    </section>
+<nav class="bottom-nav">
+  <button onclick="showSection('dashboard')">Dashboard</button>
+  <button onclick="showSection('reminders')">Reminders</button>
+  <button onclick="showSection('matchdays')">Match Days</button>
+  <button onclick="showSection('settings')">Settings</button>
+</nav>
 
-  </main>
-
-  <nav class="bottom-nav">
-    <button>Dashboard</button>
-    <button>Reminders</button>
-    <button>Match Days</button>
-    <button>Settings</button>
-  </nav>
-
-  <script src="app.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
