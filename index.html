@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0f172a" />
+
+  <title>Fuel & Recovery Reminder</title>
+
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <header>
+    <h1>Fuel & Recovery Reminder</h1>
+    <p>Athlete Meal & Supplement Tracker</p>
+  </header>
+
+  <main>
+
+    <section class="card">
+      <h2>Next Reminder</h2>
+      <div id="nextReminder">Loading...</div>
+      <div id="countdown"></div>
+    </section>
+
+    <section class="card">
+      <h2>Today's Reminders</h2>
+      <div id="reminderList"></div>
+    </section>
+
+    <section class="card">
+      <h2>Match Days</h2>
+
+      <input type="date" id="matchDate" />
+      <button id="addMatchBtn">Add Match Day</button>
+
+      <div id="matchDays"></div>
+    </section>
+
+    <section class="card settings">
+      <h2>Settings</h2>
+
+      <button id="enableNotifications">
+        Enable Notifications
+      </button>
+
+      <button id="testNotification">
+        Send Test Notification
+      </button>
+
+      <button id="toggleDarkMode">
+        Toggle Dark Mode
+      </button>
+    </section>
+
+  </main>
+
+  <nav class="bottom-nav">
+    <button>Dashboard</button>
+    <button>Reminders</button>
+    <button>Match Days</button>
+    <button>Settings</button>
+  </nav>
+
+  <script src="app.js"></script>
+</body>
+</html>
