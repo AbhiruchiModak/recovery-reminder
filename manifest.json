@@ -1,8 +1,9 @@
 {
 "name":"Fuel & Recovery Reminder",
 "short_name":"FuelReminder",
-"start_url":"/",
+"start_url":"/recovery-reminder/",
 "display":"standalone",
 "background_color":"#0f172a",
-"theme_color":"#0f172a"
+"theme_color":"#0f172a",
+"scope":"/recovery-reminder/"
 }
