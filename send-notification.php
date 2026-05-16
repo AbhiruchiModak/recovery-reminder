@@ -4,33 +4,35 @@ require __DIR__ . '/vendor/autoload.php';
 use Minishlink\WebPush\WebPush;
 use Minishlink\WebPush\Subscription;
 
-// Load subscriptions from file
-$file = __DIR__ . '/subscriptions.json';
-$subscriptions = json_decode(file_get_contents($file), true) ?: [];
-
-// VAPID keys
 $auth = [
     'VAPID' => [
-        'subject' => 'mailto:you@example.com',
+        'subject' => 'mailto:your-email@example.com', // Change this!
         'publicKey' => 'BOYnncohitFj669QBh_ojuNdHsdb5yXwc6k6Ns_oSPSOK2w43JZs1637a5r8SDyJpbevY7w2dlsIZreSkMwNgHE',
         'privateKey' => 'Verp7xKIMW9097rtQiT1lkPdx3eqpPFzms3ibKgj6Kk',
     ],
 ];
 
 $webPush = new WebPush($auth);
+$webPush->setReuseVAPIDHeaders(true); // performance
 
-// Loop through subscriptions
+$subscriptions = json_decode(file_get_contents(__DIR__ . '/subscriptions.json'), true) ?: [];
+
 foreach ($subscriptions as $sub) {
     $subscription = Subscription::create($sub);
-    $webPush->sendNotification(
+    $webPush->queueNotification(
         $subscription,
-        json_encode(['title' => 'Recovery Reminder', 'body' => 'Time to hydrate!'])
+        json_encode([
+            'title' => 'Fuel & Recovery Reminder',
+            'body'  => 'Take Collagen + Fat Flush' // customize per reminder
+        ])
     );
 }
 
-// Flush results
 foreach ($webPush->flush() as $report) {
-    echo $report->isSuccess()
-        ? 'Notification sent to ' . $report->getEndpoint()
-        : 'Error sending to ' . $report->getEndpoint() . ': ' . $report->getReason();
+    if ($report->isSuccess()) {
+        echo "Sent to {$report->getEndpoint()}\n";
+    } else {
+        echo "Failed: {$report->getReason()}\n";
+        // optionally remove bad subscription
+    }
 }
