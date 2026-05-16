@@ -1,15 +1,15 @@
 
-function isTodayMatchDay(){
+// function isTodayMatchDay(){
 
-const today = new Date()
-.toISOString()
-.split('T')[0];
+// const today = new Date()
+// .toISOString()
+// .split('T')[0];
 
-const days = getMatchDays();
+// const days = getMatchDays();
 
-return days.includes(today);
+// return days.includes(today);
 
-}
+// }
 
 function renderReminders(){
 
@@ -28,6 +28,7 @@ item.className = 'reminder-item';
 let reminderText = reminder.text;
 
 /* MATCH DAY MORNING REMINDER */
+console.log('Reminder Time:', reminder.time);
 
 if(
 matchDay &&
