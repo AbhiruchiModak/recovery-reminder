@@ -59,6 +59,17 @@ location.reload();
 
 function initializeApp(){
 
+    // Register Service Worker
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/recovery-reminder/sw.js')
+    .then(reg => {
+      console.log('Service Worker registered', reg);
+    })
+    .catch(err => console.error('SW registration failed', err));
+}
+
+
+
 renderReminders();
 renderMatchDays();
 showSection('dashboard');
@@ -239,9 +250,36 @@ requireInteraction:true
 
 }
 
-async function requestNotificationPermission(){
-await Notification.requestPermission();
+
+// async function requestNotificationPermission(){
+// await Notification.requestPermission();
+// }
+
+function requestNotificationPermission() {
+  if ('Notification' in window) {
+    Notification.requestPermission().then(permission => {
+      if (permission === 'granted') {
+        console.log('Notifications allowed');
+        subscribeUserToPush();
+      }
+    });
+  }
 }
+
+//subscribe user to push notifications
+function subscribeUserToPush() {
+  navigator.serviceWorker.ready.then(registration => {
+    registration.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: 'BOYnncohitFj669QBh_ojuNdHsdb5yXwc6k6Ns_oSPSOK2w43JZs1637a5r8SDyJpbevY7w2dlsIZreSkMwNgHE'
+    }).then(subscription => {
+      // Send subscription to your server
+      console.log('Push subscription:', JSON.stringify(subscription));
+    }).catch(err => console.error('Push subscription failed', err));
+  });
+}
+
+
 
 /* FIXED MATCH DAY LOGIC */
 
