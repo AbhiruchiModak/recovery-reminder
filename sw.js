@@ -1,11 +1,12 @@
-const CACHE_NAME='fuel-reminder-v1';
+const CACHE_NAME='fuel-reminder-v2';
 
 const urlsToCache=[
 '/',
-'/index.html',
-'/styles.css',
-'/app.js',
-'/manifest.json'
+'/recovery-reminder/',
+'/recovery-reminder/index.html',
+'/recovery-reminder/styles.css',
+'/recovery-reminder/app.js',
+'/recovery-reminder/manifest.json'
 ];
 
 self.addEventListener('install',event=>{
