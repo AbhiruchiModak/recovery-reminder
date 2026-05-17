@@ -93,9 +93,14 @@ function logout() {
 function initializeApp() {
     if ('serviceWorker' in navigator) {
         // Register regular caching SW
-        navigator.serviceWorker.register('/firebase-messaging-sw.js')
-            .then(reg => console.log('✅ Caching SW registered'))
+        navigator.serviceWorker.register('firebase-messaging-sw.js')
+            .then(reg => console.log('✅ firebase SW registered'))
             .catch(err => console.error('SW failed', err));
+
+            // Also register caching SW
+        navigator.serviceWorker.register('sw.js')
+            .then(reg => console.log('✅ Caching SW registered'))
+            .catch(err => console.error('Caching SW failed', err));
     }
 
     renderReminders();
