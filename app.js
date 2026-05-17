@@ -267,61 +267,16 @@ function requestNotificationPermission() {
 }
 
 //subscribe user to push notifications
-async function subscribeUserToPush() {
-  try {
-    const registration = await navigator.serviceWorker.ready;
-    let subscription = await registration.pushManager.getSubscription();
-
-    if (subscription) {
-      console.log('Already subscribed');
-      return subscription;
-    }
-
-    subscription = await registration.pushManager.subscribe({
+function subscribeUserToPush() {
+  navigator.serviceWorker.ready.then(registration => {
+    registration.pushManager.subscribe({
       userVisibleOnly: true,
-      applicationServerKey: urlBase64ToUint8Array('BOYnncohitFj669QBh_ojuNdHsdb5yXwc6k6Ns_oSPSOK2w43JZs1637a5r8SDyJpbevY7w2dlsIZreSkMwNgHE')
-    });
-
-    // Send to your backend
-    await fetch('/recovery-reminder/save-subscription.php', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(subscription)
-    });
-
-    console.log('Push subscription saved successfully');
-    return subscription;
-  } catch (err) {
-    console.error('Push subscription failed:', err);
-  }
-}
-
-document.getElementById('enableNotifications').addEventListener('click', async () => {
-  if (!('Notification' in window)) {
-    alert("Notifications not supported");
-    return;
-  }
-
-  const permission = await Notification.requestPermission();
-  if (permission === 'granted') {
-    await subscribeUserToPush();
-  } else {
-    alert("Notification permission denied");
-  }
-});
-
-//helper function
-function urlBase64ToUint8Array(base64String) {
-  const padding = '='.repeat((4 - base64String.length % 4) % 4);
-  const base64 = (base64String + padding)
-    .replace(/-/g, '+')
-    .replace(/_/g, '/');
-  const rawData = atob(base64);
-  const outputArray = new Uint8Array(rawData.length);
-  for (let i = 0; i < rawData.length; ++i) {
-    outputArray[i] = rawData.charCodeAt(i);
-  }
-  return outputArray;
+      applicationServerKey: 'BOYnncohitFj669QBh_ojuNdHsdb5yXwc6k6Ns_oSPSOK2w43JZs1637a5r8SDyJpbevY7w2dlsIZreSkMwNgHE'
+    }).then(subscription => {
+      // Send subscription to your server
+      console.log('Push subscription:', JSON.stringify(subscription));
+    }).catch(err => console.error('Push subscription failed', err));
+  });
 }
 
 
