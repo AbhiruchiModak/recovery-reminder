@@ -36,6 +36,7 @@ const messaging = firebase.messaging();
 let currentToken = null;
 
 // Request permission and get FCM token (Best for Mobile)
+// Request permission and get FCM token
 async function requestNotificationPermission() {
     try {
         console.log("Requesting notification permission...");
@@ -46,9 +47,9 @@ async function requestNotificationPermission() {
             return;
         }
 
-        // Register Firebase Messaging Service Worker FIRST
-        const swRegistration = await navigator.serviceWorker.register('/firebase-messaging-sw.js', { scope: '/' });
-        console.log("Firebase Messaging SW registered");
+        // Use relative path (no leading slash) - better for GitHub Pages
+        const swRegistration = await navigator.serviceWorker.register('firebase-messaging-sw.js');
+        console.log("✅ Firebase Messaging SW registered");
 
         // Get FCM Token
         currentToken = await messaging.getToken({
@@ -65,7 +66,7 @@ async function requestNotificationPermission() {
         }
     } catch (err) {
         console.error("Error getting FCM token:", err);
-        alert("Failed to enable notifications. Please check console.");
+        alert("Failed to enable notifications.\n\nCheck if 'firebase-messaging-sw.js' is uploaded correctly.");
     }
 }
 
